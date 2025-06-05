@@ -7,11 +7,19 @@
     <link rel="stylesheet" href="dash_board.css">
 </head>
 <body>
+    <div class="floating-particles" id="particles"></div>
+    <div class="notification" id="notification"></div>
+    
     <div class="container">
         <header>
             <h1>Interactive Dashboard</h1>
-            <p class="subtitle">Your personal productivity hub</p>
+            <p class="subtitle">Your Enhanced Productivity Hub</p>
         </header>
+
+          <div class="container1">
+            <p class="para1">An interactive dashboard is a data visualization tool that presents key performance indicators (KPIs), metrics, and insights in a dynamic, user-friendly interface. It allows users to explore data through interactive elements like filters, drill-downs, charts, and graphs, enabling real-time analysis and decision-making. Built using tools like Tableau, Power BI, or custom frameworks, interactive dashboards consolidate data from multiple sources, offering customizable views tailored to specific needs. They enhance data accessibility, support trend identification, and improve operational efficiency across industries like business, healthcare, and finance.</p>
+          </div>
+
 
         <nav class="nav-tabs">
             <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
@@ -26,51 +34,91 @@
                 <div class="card">
                     <h3>Skills Overview</h3>
                     <div class="skill-item">
-                        <span>JavaScript</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 90%"></div>
+                        <span class="skill-name">JavaScript</span>
+                        <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
+                            <div class="progress-bar" style="flex: 1;">
+                                <div class="progress-fill" style="width: 92%"></div>
+                            </div>
+                            <span class="skill-percentage">92%</span>
                         </div>
                     </div>
                     <div class="skill-item">
-                        <span>CSS</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 85%"></div>
+                        <span class="skill-name">CSS</span>
+                        <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
+                            <div class="progress-bar" style="flex: 1;">
+                                <div class="progress-fill" style="width: 88%"></div>
+                            </div>
+                            <span class="skill-percentage">88%</span>
                         </div>
                     </div>
                     <div class="skill-item">
-                        <span>HTML</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 95%"></div>
+                        <span class="skill-name">HTML</span>
+                        <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
+                            <div class="progress-bar" style="flex: 1;">
+                                <div class="progress-fill" style="width: 96%"></div>
+                            </div>
+                            <span class="skill-percentage">96%</span>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">React</span>
+                        <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
+                            <div class="progress-bar" style="flex: 1;">
+                                <div class="progress-fill" style="width: 84%"></div>
+                            </div>
+                            <span class="skill-percentage">84%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <h3>Quick Stats</h3>
-                    <p><strong>Projects Completed:</strong> <span id="project-count">42</span></p>
-                    <p><strong>Lines of Code:</strong> <span id="code-lines">15,847</span></p>
-                    <p><strong>Coffee Consumed:</strong> <span id="coffee-count">∞</span></p>
-                    <p><strong>Bugs Fixed:</strong> <span id="bug-count">127</span></p>
+                    <div class="stats-item">
+                        <span>Projects Completed</span>
+                        <span class="stats-value" id="project-count">47</span>
+                    </div>
+                    <div class="stats-item">
+                        <span>Lines of Code</span>
+                        <span class="stats-value" id="code-lines">18,254</span>
+                    </div>
+                    <div class="stats-item">
+                        <span>Coffee Consumed</span>
+                        <span class="stats-value" id="coffee-count">∞</span>
+                    </div>
+                    <div class="stats-item">
+                        <span>Bugs Fixed</span>
+                        <span class="stats-value" id="bug-count">143</span>
+                    </div>
+                    <div class="stats-item">
+                        <span>GitHub Stars</span>
+                        <span class="stats-value" id="github-stars">289</span>
+                    </div>
                 </div>
 
                 <div class="card">
                     <h3>Recent Activity</h3>
-                    <p>✅ Completed responsive design project</p>
-                    <p>🚀 Deployed new web application</p>
-                    <p>📚 Learned new JavaScript framework</p>
-                    <p>🎯 Optimized website performance</p>
+                    <div class="activity-item">✅ Completed responsive design project</div>
+                    <div class="activity-item">🚀 Deployed new web application</div>
+                    <div class="activity-item">📚 Learned new JavaScript framework</div>
+                    <div class="activity-item">🎯 Optimized website performance</div>
+                    <div class="activity-item">🔧 Fixed critical production bug</div>
+                    <div class="activity-item">📊 Created analytics dashboard</div>
+                    <div class="activity-item">🌟 Added new features to portfolio</div>
                 </div>
 
                 <div class="card">
                     <h3>Current Time</h3>
-                    <div id="current-time"></div>
+                    <div class="clock-display">
+                        <div class="clock-time" id="current-time"></div>
+                        <div class="clock-date" id="current-date"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="calculator" class="tab-content">
             <div class="card">
-                <h3>Calculator</h3>
+                <h3>Enhanced Calculator</h3>
                 <div id="calc-display">0</div>
                 <div class="calculator">
                     <button class="calc-btn" onclick="clearCalc()">C</button>
@@ -88,8 +136,8 @@
                     <button class="calc-btn" onclick="appendToCalc('1')">1</button>
                     <button class="calc-btn" onclick="appendToCalc('2')">2</button>
                     <button class="calc-btn" onclick="appendToCalc('3')">3</button>
-                    <button class="calc-btn equals" onclick="calculateResult()" rowspan="2">=</button>
-                    <button class="calc-btn" onclick="appendToCalc('0')" colspan="2">0</button>
+                    <button class="calc-btn equals" onclick="calculateResult()" style="grid-row: span 2;">=</button>
+                    <button class="calc-btn" onclick="appendToCalc('0')" style="grid-column: span 2;">0</button>
                     <button class="calc-btn" onclick="appendToCalc('.')">.</button>
                 </div>
             </div>
@@ -97,10 +145,16 @@
 
         <div id="todo" class="tab-content">
             <div class="card">
-                <h3>Todo List</h3>
+                <h3>Smart Todo List</h3>
                 <input type="text" id="todo-input" class="todo-input" placeholder="Add a new task..." onkeypress="handleTodoKeyPress(event)">
                 <button class="btn btn-primary" onclick="addTodo()">Add Task</button>
+                <div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="filterTodos('all')" id="filter-all">All</button>
+                    <button class="btn" onclick="filterTodos('active')" id="filter-active" style="background: #e2e8f0; color: #333;">Active</button>
+                    <button class="btn" onclick="filterTodos('completed')" id="filter-completed" style="background: #e2e8f0; color: #333;">Completed</button>
+                </div>
                 <div id="todo-list"></div>
+                <div id="todo-stats" style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9rem;"></div>
             </div>
         </div>
 
@@ -108,9 +162,10 @@
             <div class="card">
                 <h3>Weather Information</h3>
                 <div class="weather-display">
-                    <div class="weather-temp">22°C</div>
-                    <div class="weather-desc">Partly Cloudy</div>
+                    <div class="weather-temp">24°C</div>
+                    <div class="weather-desc">Sunny with Light Clouds</div>
                     <div class="weather-details">
+<<<<<<< HEAD
                         <div><strong>Humidity:</strong> 65%</div>
                         <div><strong>Wind:</strong> 12 km/h</div>
                         <div><strong>Pressure:</strong> 1013 hPa</div>
@@ -133,3 +188,8 @@
     <script src="dash_board.js"></script>
 </body>
 </html>
+=======
+                        <div class="weather-detail-item"><strong>Humidity:</strong> 58%</div>
+                        <div class="weather-detail-item"><strong>Wind:</strong> 8 km/h</div>
+                        <div class="weather-detail-item"><strong>Pressure:</strong> 1018 h
+>>>>>>> 6d98845a8b7aa823c892ffd194cb30eeeb06de57
