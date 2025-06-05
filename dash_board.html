@@ -324,6 +324,8 @@
             justify-content: flex-end;
             font-family: 'Courier New', monospace;
             box-shadow: inset 0 4px 8px rgba(0,0,0,0.3);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .todo-input {
@@ -631,10 +633,30 @@
                 opacity: 0;
             }
         }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body>
     <div class="floating-particles" id="particles"></div>
+    <div class="notification" id="notification"></div>
     
     <div class="container">
         <header>
@@ -658,36 +680,36 @@
                         <span class="skill-name">JavaScript</span>
                         <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
                             <div class="progress-bar" style="flex: 1;">
-                                <div class="progress-fill" style="width: 90%"></div>
+                                <div class="progress-fill" style="width: 92%"></div>
                             </div>
-                            <span class="skill-percentage">90%</span>
+                            <span class="skill-percentage">92%</span>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">CSS</span>
                         <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
                             <div class="progress-bar" style="flex: 1;">
-                                <div class="progress-fill" style="width: 85%"></div>
+                                <div class="progress-fill" style="width: 88%"></div>
                             </div>
-                            <span class="skill-percentage">85%</span>
+                            <span class="skill-percentage">88%</span>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">HTML</span>
                         <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
                             <div class="progress-bar" style="flex: 1;">
-                                <div class="progress-fill" style="width: 95%"></div>
+                                <div class="progress-fill" style="width: 96%"></div>
                             </div>
-                            <span class="skill-percentage">95%</span>
+                            <span class="skill-percentage">96%</span>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">React</span>
                         <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
                             <div class="progress-bar" style="flex: 1;">
-                                <div class="progress-fill" style="width: 80%"></div>
+                                <div class="progress-fill" style="width: 84%"></div>
                             </div>
-                            <span class="skill-percentage">80%</span>
+                            <span class="skill-percentage">84%</span>
                         </div>
                     </div>
                 </div>
@@ -696,11 +718,11 @@
                     <h3>Quick Stats</h3>
                     <div class="stats-item">
                         <span>Projects Completed</span>
-                        <span class="stats-value" id="project-count">42</span>
+                        <span class="stats-value" id="project-count">47</span>
                     </div>
                     <div class="stats-item">
                         <span>Lines of Code</span>
-                        <span class="stats-value" id="code-lines">15,847</span>
+                        <span class="stats-value" id="code-lines">18,254</span>
                     </div>
                     <div class="stats-item">
                         <span>Coffee Consumed</span>
@@ -708,11 +730,11 @@
                     </div>
                     <div class="stats-item">
                         <span>Bugs Fixed</span>
-                        <span class="stats-value" id="bug-count">127</span>
+                        <span class="stats-value" id="bug-count">143</span>
                     </div>
                     <div class="stats-item">
                         <span>GitHub Stars</span>
-                        <span class="stats-value" id="github-stars">234</span>
+                        <span class="stats-value" id="github-stars">289</span>
                     </div>
                 </div>
 
@@ -724,6 +746,7 @@
                     <div class="activity-item">🎯 Optimized website performance</div>
                     <div class="activity-item">🔧 Fixed critical production bug</div>
                     <div class="activity-item">📊 Created analytics dashboard</div>
+                    <div class="activity-item">🌟 Added new features to portfolio</div>
                 </div>
 
                 <div class="card">
@@ -782,23 +805,9 @@
             <div class="card">
                 <h3>Weather Information</h3>
                 <div class="weather-display">
-                    <div class="weather-temp">22°C</div>
-                    <div class="weather-desc">Partly Cloudy</div>
+                    <div class="weather-temp">24°C</div>
+                    <div class="weather-desc">Sunny with Light Clouds</div>
                     <div class="weather-details">
-                        <div class="weather-detail-item"><strong>Humidity:</strong> 65%</div>
-                        <div class="weather-detail-item"><strong>Wind:</strong> 12 km/h</div>
-                        <div class="weather-detail-item"><strong>Pressure:</strong> 1013 hPa</div>
-                        <div class="weather-detail-item"><strong>UV Index:</strong> 5</div>
-                        <div class="weather-detail-item"><strong>Visibility:</strong> 10 km</div>
-                        <div class="weather-detail-item"><strong>Feels Like:</strong> 24°C</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="game" class="tab-content">
-            <div class="card">
-                <h3>Enhanced Tic Tac Toe</h3>
-                <div class="game-status" id="game-status">Player X's turn</div>
-                <div class="game-board" id="game-board"></div>
-                <div style="text-align: center; margin-top: 25px; display: flex; gap: 15px; justify-content
+                        <div class="weather-detail-item"><strong>Humidity:</strong> 58%</div>
+                        <div class="weather-detail-item"><strong>Wind:</strong> 8 km/h</div>
+                        <div class="weather-detail-item"><strong>Pressure:</strong> 1018 h
