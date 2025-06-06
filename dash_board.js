@@ -1,3 +1,85 @@
+
+// DOM Elements
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+const todoInput = document.getElementById('todo-input');
+const todoList = document.getElementById('todo-list');
+const todoStats = document.getElementById('todo-stats');
+const calcDisplay = document.getElementById('calc-display');
+const gameBoard = document.getElementById('game-board');
+const gameStatus = document.getElementById('game-status');
+const currentTime = document.getElementById('current-time');
+const currentDate = document.getElementById('current-date');
+const notesInput = document.getElementById('notes-input');
+const savedNotes = document.getElementById('saved-notes');
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const notificationsToggle = document.getElementById('notifications-toggle');
+const themeSelector = document.getElementById('theme-selector');
+const fontSizeSlider = document.getElementById('font-size-slider');
+const fontSizeValue = document.getElementById('font-size-value');
+const notification = document.getElementById('notification');
+const particlesContainer = document.getElementById('particles');
+const settings = document.getElementById('settings');
+const notesContainer = document.getElementById('notes');
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
+const sidebar = document.querySelector('.sidebar');
+const themeToggle = document.querySelector('.theme-toggle');
+const loadingScreen = document.querySelector('.loading-screen');
+const quickAccess = document.querySelector('.quick-access');
+const calendarHeader = document.querySelector('.calendar-header');
+const calendarDays = document.querySelector('.calendar-days');
+const eventModal = document.getElementById('event-modal');
+const eventForm = document.getElementById('event-form');
+
+let timer = null;
+let elapsed = 0; // in milliseconds
+let running = false;
+
+function updateDisplay(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    document.getElementById('display').innerText = `${hours}:${minutes}:${seconds}`;
+}
+
+document.getElementById('start').onclick = function() {
+    if (!running) {
+        running = true;
+        let startTime = Date.now() - elapsed;
+        timer = setInterval(() => {
+            elapsed = Date.now() - startTime;
+            updateDisplay(elapsed);
+        }, 100);
+    }
+};
+
+document.getElementById('stop').onclick = function() {
+    if (running) {
+        running = false;
+        clearInterval(timer);
+    }
+};
+
+document.getElementById('reset').onclick = function() {
+    running = false;
+    clearInterval(timer);
+    elapsed = 0;
+    updateDisplay(elapsed);
+};
+
+updateDisplay(0);
+
+// State Management
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let events = JSON.parse(localStorage.getItem('events')) || [];
+let gameState = {
+    board: Array(9).fill(''),
+    currentPlayer: 'X',
+    gameOver: false
+
 // DOM Elements - Grouped for better organization
 const DOM = {
     tabButtons: document.querySelectorAll('.tab-button'),
@@ -678,9 +760,6 @@ function addEvent(event) {
     showNotification('Event added successfully!', 'success');
 }
 
-// ---
-// Search
-// ---
 
 function initializeSearch() {
     if (DOM.searchBtn) {
