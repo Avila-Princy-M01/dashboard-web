@@ -71,6 +71,61 @@ document.getElementById('reset').onclick = function() {
 
 updateDisplay(0);
 
+let timer = null;
+let elapsed = 0; // current session in ms
+let running = false;
+let totalElapsed = 0; // sum of all stopped times in ms
+
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+function updateDisplay(ms) {
+    document.getElementById('display').innerText = formatTime(ms);
+}
+
+function updateTotalTimeDisplay(ms) {
+    document.getElementById('total-time').innerText = formatTime(ms);
+}
+
+document.getElementById('start').onclick = function() {
+    if (!running) {
+        running = true;
+        let startTime = Date.now() - elapsed;
+        timer = setInterval(() => {
+            elapsed = Date.now() - startTime;
+            updateDisplay(elapsed);
+        }, 100);
+    }
+};
+
+document.getElementById('stop').onclick = function() {
+    if (running) {
+        running = false;
+        clearInterval(timer);
+        totalElapsed += elapsed;
+        updateTotalTimeDisplay(totalElapsed);
+        elapsed = 0;
+        updateDisplay(elapsed);
+    }
+};
+
+document.getElementById('reset').onclick = function() {
+    running = false;
+    clearInterval(timer);
+    elapsed = 0;
+    totalElapsed = 0;
+    updateDisplay(elapsed);
+    updateTotalTimeDisplay(totalElapsed);
+};
+
+updateDisplay(0);
+updateTotalTimeDisplay(0);
+
 // State Management
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
