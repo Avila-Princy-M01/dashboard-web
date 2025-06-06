@@ -1,6 +1,6 @@
 
 // DOM Elements
-const tabButtons = document.querySelectorAll('.tab-button');
+const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 const todoInput = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
@@ -135,6 +135,7 @@ let gameState = {
     currentPlayer: 'X',
     gameOver: false
 
+<<<<<<< HEAD
 // DOM Elements - Grouped for better organization
 const DOM = {
     tabButtons: document.querySelectorAll('.tab-button'),
@@ -254,6 +255,23 @@ function showNotification(message, type = 'info') {
 // Initialization
 // ---
 
+=======
+// Pomodoro Timer Implementation
+let timerInterval;
+let timeLeft = 25 * 60; // 25 minutes in seconds
+let isRunning = false;
+let currentMode = 'pomodoro';
+let completedPomodoros = 0;
+let totalFocusTime = 0;
+
+const timerModes = {
+    'pomodoro': 25 * 60,
+    'short-break': 5 * 60,
+    'long-break': 15 * 60
+};
+
+// Initialize Components
+>>>>>>> 1ed5aaa (Updated readme file)
 document.addEventListener('DOMContentLoaded', () => {
     loadAndApplySettings(); // Load and apply settings first
     initializeTabs();
@@ -269,6 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeSidebar();
     initializeQuickAccess();
     hideLoadingScreen();
+    setTimerMode('pomodoro');
+    updateTimerDisplay();
 });
 
 function loadAndApplySettings() {
@@ -367,6 +387,7 @@ function renderTodos(todosToRender = state.todos) {
     updateTodoStats();
 }
 
+<<<<<<< HEAD
 function updateTodoStats() {
     if (!DOM.todoStats) return;
     const total = state.todos.length;
@@ -375,17 +396,30 @@ function updateTodoStats() {
 }
 
 // ---
+=======
+function saveTodos() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+>>>>>>> 1ed5aaa (Updated readme file)
 // Calculator
 // ---
 
 function initializeCalculator() {
+<<<<<<< HEAD
     if (DOM.calculator) {
         DOM.calculator.addEventListener('click', handleCalculatorClick);
         DOM.calcDisplay.textContent = '0'; // Initialize display
+=======
+    const calculator = document.querySelector('.calculator');
+    if (calculator) {
+        calculator.addEventListener('click', handleCalculatorClick);
+>>>>>>> 1ed5aaa (Updated readme file)
     }
 }
 
 function handleCalculatorClick(event) {
+<<<<<<< HEAD
     if (!event.target.matches('button')) return;
 
     const value = event.target.textContent;
@@ -424,6 +458,32 @@ function appendToCalc(value) {
             return; // Allow only one decimal point
         } else {
             DOM.calcDisplay.textContent += value;
+=======
+    if (event.target.matches('.calc-btn')) {
+        const value = event.target.textContent;
+        const display = document.getElementById('calc-display');
+        
+        switch(value) {
+            case 'C':
+                display.textContent = '0';
+                break;
+            case '⌫':
+                display.textContent = display.textContent.slice(0, -1) || '0';
+                break;
+            case '=':
+                try {
+                    display.textContent = eval(display.textContent);
+                } catch (error) {
+                    display.textContent = 'Error';
+                }
+                break;
+            default:
+                if (display.textContent === '0' && value !== '.') {
+                    display.textContent = value;
+                } else {
+                    display.textContent += value;
+                }
+>>>>>>> 1ed5aaa (Updated readme file)
         }
     }
 }
@@ -1091,9 +1151,136 @@ window.toggleTodo = toggleTodo;
 window.deleteTodo = deleteTodo;
 window.deleteNote = deleteNote;
 window.resetGame = resetGame;
+<<<<<<< HEAD
 window.clearCalc = clearCalc;
 window.deleteLast = deleteLast;
 window.appendToCalc = appendToCalc;
 window.calculateResult = calculateResult;
 window.saveNote = saveNote; // For notes save button
 window.filterTodos = filterTodos; // Expose filter function
+=======
+
+// Calculator Functions
+function clearCalc() {
+    document.getElementById('calc-display').textContent = '0';
+}
+
+function deleteLast() {
+    const display = document.getElementById('calc-display');
+    display.textContent = display.textContent.slice(0, -1) || '0';
+}
+
+function appendToCalc(value) {
+    const display = document.getElementById('calc-display');
+    if (display.textContent === '0' && value !== '.') {
+        display.textContent = value;
+    } else {
+        display.textContent += value;
+    }
+}
+
+function calculateResult() {
+    const display = document.getElementById('calc-display');
+    try {
+        const result = eval(display.textContent);
+        display.textContent = Number.isFinite(result) ? result : 'Error';
+    } catch (error) {
+        display.textContent = 'Error';
+    }
+}
+// Notes Functions
+function saveNote() {
+    const noteInput = document.getElementById('notes-input');
+    const text = noteInput.value.trim();
+
+    if (text) {
+        const existingNotes = document.querySelectorAll('.note');
+        for (let note of existingNotes) {
+            if (note.textContent === text) {
+                alert("Duplicate note not allowed.");
+                return;
+            }
+        }
+
+        addNote(text);
+        noteInput.value = '';
+    }
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+}
+
+function startPomodoro() {
+    if (!isRunning) {
+        isRunning = true;
+        document.getElementById('start-timer').style.display = 'none';
+        document.getElementById('pause-timer').style.display = 'inline-block';
+        document.querySelector('.timer-display').classList.add('active');
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                handleTimerComplete();
+            }
+        }, 1000);
+    }
+}
+
+function pausePomodoro() {
+    if (isRunning) {
+        isRunning = false;
+        document.getElementById('start-timer').style.display = 'inline-block';
+        document.getElementById('pause-timer').style.display = 'none';
+        document.querySelector('.timer-display').classList.remove('active');
+        clearInterval(timerInterval);
+    }
+}
+
+function resetPomodoro() {
+    clearInterval(timerInterval);
+    isRunning = false;
+    timeLeft = timerModes[currentMode];
+    updateTimerDisplay();
+    document.getElementById('start-timer').style.display = 'inline-block';
+    document.getElementById('pause-timer').style.display = 'none';
+    document.querySelector('.timer-display').classList.remove('active');
+}
+
+function setTimerMode(mode) {
+    currentMode = mode;
+    resetPomodoro();
+    
+    // Update active button
+    document.querySelectorAll('.timer-modes .btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById(`${mode}-mode`).classList.add('active');
+}
+
+function handleTimerComplete() {
+    if (currentMode === 'pomodoro') {
+        completedPomodoros++;
+        totalFocusTime += 25;
+        document.getElementById('completed-pomodoros').textContent = completedPomodoros;
+        document.getElementById('total-focus-time').textContent = `${Math.floor(totalFocusTime / 60)}h ${totalFocusTime % 60}m`;
+        
+        // Show notification
+        showNotification('Pomodoro completed! Time for a break.', 'success');
+    } else {
+        showNotification('Break time is over! Ready for the next pomodoro?', 'info');
+    }
+    
+    // Play sound
+    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+    audio.play();
+    
+    resetPomodoro();
+}
+>>>>>>> 1ed5aaa (Updated readme file)
