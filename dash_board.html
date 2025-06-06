@@ -269,6 +269,16 @@
             </div>
         </div>
 
+        <div class="stopwatch-container">
+        <h1>Stopwatch</h1>
+        <div id="display">00:00:00</div>
+        <div class="buttons">
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+
         <div id="projects" class="tab-content">
             <div class="card">
                 <h3><i class="fas fa-project-diagram"></i> Featured Projects</h3>
@@ -503,34 +513,32 @@
     </footer>
 
     <!-- Modal Templates -->
-    <div class="modal" id="event-modal">
-        <div class="modal-content">
-            <h3>Add Event</h3>
-            <form id="event-form" onsubmit="addEvent(event)">
-                <div class="form-group">
-                    <label>Event Title</label>
-                    <input type="text" id="event-title" required>
-                </div>
-                <div class="form-group">
-                    <label>Date</label>
-                    <input type="date" id="event-date" required>
-                </div>
-                <div class="form-group">
-                    <label>Time</label>
-                    <input type="time" id="event-time" required>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="event-description"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" aria-label="Save event">Save Event</button>
-                    <button type="button" class="btn" onclick="closeModal()" aria-label="Cancel">Cancel</button>
-                </div>
-            </form>
-        </div>
+<div class="modal" id="event-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display:none;">
+    <div class="modal-content">
+        <h3 id="modal-title">Add Event</h3>
+        <form id="event-form" onsubmit="addEvent(event)">
+            <div class="form-group">
+                <label for="event-title">Event Title</label>
+                <input type="text" id="event-title" required aria-required="true" />
+            </div>
+            <div class="form-group">
+                <label for="event-date">Date</label>
+                <input type="date" id="event-date" required aria-required="true" onchange="updateCountdown()" />
+            </div>
+            <div class="form-group">
+                <label for="event-time">Time</label>
+                <input type="time" id="event-time" required aria-required="true" oninput="updateCountdown()" />
+                <small id="countdown-display" style="color: green; display:none;"></small>
+            </div>
+            <div class="form-group">
+                <label for="event-description">Description</label>
+                <textarea id="event-description" rows="3" placeholder="Optional"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" aria-label="Save event">Save Event</button>
+                <button type="button" class="btn" onclick="closeModal()" aria-label="Cancel">Cancel</button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <script src="dash_board.js"></script>
-</body>
-</html>
