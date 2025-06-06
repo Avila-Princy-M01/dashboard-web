@@ -1124,23 +1124,68 @@ header h1 {
     }
 }
 
-/* Print Styles */
+/* Enhanced Print Styles */
 @media print {
+    /* Hide non-essential UI elements */
     .quick-access,
     .sidebar,
     .nav-tabs,
-    .modal {
+    .modal,
+    .btn, /* Hide buttons on print */
+    .no-print /* Any element with this class will be hidden */
+    {
         display: none !important;
     }
     
+    /* Container adjustments for full-width print */
     .container {
-        max-width: none;
-        padding: 0;
+        max-width: 100% !important;
+        padding: 0.5in; /* Add some padding for print margins */
+        margin: 0;
     }
     
+    /* Card styling for print */
     .card {
         break-inside: avoid;
-        box-shadow: none;
+        box-shadow: none !important;
         border: 1px solid #000000;
+        background: #fff !important;
+        page-break-inside: avoid;
+        margin-bottom: 1em;
+        padding: 0.5em;
     }
-} 
+    
+    /* Add a fixed header and footer for print pages */
+    @page {
+        margin: 1in;
+    }
+    header.print-header,
+    footer.print-footer {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        color: #000;
+        background: #fff;
+        font-size: 12px;
+        line-height: 1.2;
+        border-bottom: 1px solid #000;
+        padding: 0.2em 1em;
+    }
+    header.print-header {
+        top: 0;
+    }
+    footer.print-footer {
+        bottom: 0;
+        border-top: 1px solid #000;
+        border-bottom: none;
+    }
+    
+    /* Content spacing to avoid overlap with header/footer */
+    body {
+        margin-top: 2.5em;
+        margin-bottom: 2.5em;
+        color: #000;
+        background: #fff;
+        -webkit-print-color-adjust: exact; /* ensure colors print accurately */
+    }
+}
