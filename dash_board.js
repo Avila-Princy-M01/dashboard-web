@@ -717,17 +717,21 @@ function calculateResult() {
         display.textContent = 'Error';
     }
 }
-
 // Notes Functions
 function saveNote() {
     const noteInput = document.getElementById('notes-input');
     const text = noteInput.value.trim();
+
     if (text) {
+        const existingNotes = document.querySelectorAll('.note');
+        for (let note of existingNotes) {
+            if (note.textContent === text) {
+                alert("Duplicate note not allowed.");
+                return;
+            }
+        }
+
         addNote(text);
         noteInput.value = '';
     }
 }
-
-function clearNote() {
-    document.getElementById('notes-input').value = '';
-} 
