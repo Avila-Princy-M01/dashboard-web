@@ -17,8 +17,85 @@
     --danger-color: #e74c3c;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
+    --white: #ffffff;
+    --text-secondary: #666666;
+    --hover-color: #f8f9fa;
 }
 
+
+.stopwatch-container {
+    background: #fff;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 0 16px 4px #e0e0e0;
+    text-align: center;
+}
+
+#display {
+    font-size: 3rem;
+    margin: 1.5rem 0;
+    letter-spacing: 2px;
+}
+
+.buttons button {
+    font-size: 1.2rem;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #007bff;
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.buttons button:hover {
+    background: #0056b3;
+}
+
+
+.stopwatch-container {
+    background: #fff;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 0 16px 4px #e0e0e0;
+    text-align: center;
+}
+
+#display {
+    font-size: 3rem;
+    margin: 1.5rem 0;
+    letter-spacing: 2px;
+}
+
+.buttons button {
+    font-size: 1.2rem;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #007bff;
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.buttons button:hover {
+    background: #0056b3;
+}
+
+.total-time-box {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #f3f7ff;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+}
+
+#total-time {
+    font-size: 2rem;
+    color: #007bff;
+    margin-t
 /* Dark Mode Variables */
 [data-theme="dark"] {
     --primary-color: #64b5f6;
@@ -27,6 +104,9 @@
     --card-background: #2d2d2d;
     --text-color: #ecf0f1;
     --border-color: #404040;
+    --white: #ffffff;
+    --text-secondary: #b0b0b0;
+    --hover-color: #3d3d3d;
 }
 
 body {
@@ -43,16 +123,16 @@ body {
 }
 
 .container1 {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto 40px;
-    padding: 20px;
+    padding: 27px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
+    border-radius: 28px;
+    backdrop-filter: blur(18px);
 }
 
 .para1 {
-    color: var(--white);
+    color: var(--text-color);
     font-size: 1.1rem;
     line-height: 1.8;
     text-align: justify;
@@ -473,10 +553,12 @@ header h1 {
 
     .nav-tabs {
         flex-direction: column;
+        align-items: stretch;
     }
 
     .tab-btn {
         width: 100%;
+        justify-content: center;
     }
 
     .weather-details {
@@ -484,7 +566,29 @@ header h1 {
     }
 
     .calculator {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .pomodoro-container {
+        padding: 10px;
+    }
+
+    .timer-display {
+        font-size: 3rem;
+    }
+
+    .timer-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .timer-modes {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pomodoro-stats {
+        padding: 10px;
     }
 }
 
@@ -1121,6 +1225,7 @@ header h1 {
   }
 }
 
+
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
     :root {
@@ -1153,4 +1258,203 @@ header h1 {
         box-shadow: none;
         border: 1px solid #000000;
     }
-} 
+
+    
+    /* Add a fixed header and footer for print pages */
+    @page {
+        margin: 1in;
+    }
+    header.print-header,
+    footer.print-footer {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        color: #000;
+        background: #fff;
+        font-size: 12px;
+        line-height: 1.2;
+        border-bottom: 1px solid #000;
+        padding: 0.2em 1em;
+    }
+    header.print-header {
+        top: 0;
+    }
+    footer.print-footer {
+        bottom: 0;
+        border-top: 1px solid #000;
+        border-bottom: none;
+    }
+    
+    /* Content spacing to avoid overlap with header/footer */
+    body {
+        margin-top: 2.5em;
+        margin-bottom: 2.5em;
+        color: #000;
+        background: #fff;
+        -webkit-print-color-adjust: exact; /* ensure colors print accurately */
+    }
+}
+
+/* Pomodoro Timer Styles */
+.pomodoro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.timer-display {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    margin: 20px 0;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.timer-modes {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.timer-modes .btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.timer-modes .btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.timer-modes .btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.pomodoro-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.pomodoro-stats .stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.pomodoro-stats .stat i {
+    color: var(--primary-color);
+}
+
+/* Animation for timer */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.timer-display.active {
+    animation: pulse 1s infinite;
+}
+
+/* Dark Mode Specific Styles */
+[data-theme="dark"] .card {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .tab-btn {
+    background: var(--card-background);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .tab-btn:hover {
+    background: var(--hover-color);
+}
+
+[data-theme="dark"] .progress-bar {
+    background: var(--border-color);
+}
+
+[data-theme="dark"] .stats-item {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .activity-item {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .calc-btn {
+    background: var(--card-background);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .calc-btn:hover {
+    background: var(--hover-color);
+}
+
+[data-theme="dark"] .timer-display {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .pomodoro-stats .stat {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+}
+
+/* Print Styles */
+@media print {
+    .quick-access,
+    .sidebar,
+    .nav-tabs,
+    .tab-btn,
+    .btn,
+    .theme-toggle,
+    .search-container,
+    .floating-particles {
+        display: none !important;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border: 1px solid #000;
+        margin-bottom: 20px;
+        box-shadow: none;
+    }
+
+    body {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000000;
+    }
+}
+

@@ -1,3 +1,141 @@
+
+
+// DOM Elements
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+const todoInput = document.getElementById('todo-input');
+const todoList = document.getElementById('todo-list');
+const todoStats = document.getElementById('todo-stats');
+const calcDisplay = document.getElementById('calc-display');
+const gameBoard = document.getElementById('game-board');
+const gameStatus = document.getElementById('game-status');
+const currentTime = document.getElementById('current-time');
+const currentDate = document.getElementById('current-date');
+const notesInput = document.getElementById('notes-input');
+const savedNotes = document.getElementById('saved-notes');
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const notificationsToggle = document.getElementById('notifications-toggle');
+const themeSelector = document.getElementById('theme-selector');
+const fontSizeSlider = document.getElementById('font-size-slider');
+const fontSizeValue = document.getElementById('font-size-value');
+const notification = document.getElementById('notification');
+const particlesContainer = document.getElementById('particles');
+const settings = document.getElementById('settings');
+const notesContainer = document.getElementById('notes');
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
+const sidebar = document.querySelector('.sidebar');
+const themeToggle = document.querySelector('.theme-toggle');
+const loadingScreen = document.querySelector('.loading-screen');
+const quickAccess = document.querySelector('.quick-access');
+const calendarHeader = document.querySelector('.calendar-header');
+const calendarDays = document.querySelector('.calendar-days');
+const eventModal = document.getElementById('event-modal');
+const eventForm = document.getElementById('event-form');
+
+let timer = null;
+let elapsed = 0; // in milliseconds
+let running = false;
+
+function updateDisplay(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    document.getElementById('display').innerText = `${hours}:${minutes}:${seconds}`;
+}
+
+document.getElementById('start').onclick = function() {
+    if (!running) {
+        running = true;
+        let startTime = Date.now() - elapsed;
+        timer = setInterval(() => {
+            elapsed = Date.now() - startTime;
+            updateDisplay(elapsed);
+        }, 100);
+    }
+};
+
+document.getElementById('stop').onclick = function() {
+    if (running) {
+        running = false;
+        clearInterval(timer);
+    }
+};
+
+document.getElementById('reset').onclick = function() {
+    running = false;
+    clearInterval(timer);
+    elapsed = 0;
+    updateDisplay(elapsed);
+};
+
+updateDisplay(0);
+
+let timer = null;
+let elapsed = 0; // current session in ms
+let running = false;
+let totalElapsed = 0; // sum of all stopped times in ms
+
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+function updateDisplay(ms) {
+    document.getElementById('display').innerText = formatTime(ms);
+}
+
+function updateTotalTimeDisplay(ms) {
+    document.getElementById('total-time').innerText = formatTime(ms);
+}
+
+document.getElementById('start').onclick = function() {
+    if (!running) {
+        running = true;
+        let startTime = Date.now() - elapsed;
+        timer = setInterval(() => {
+            elapsed = Date.now() - startTime;
+            updateDisplay(elapsed);
+        }, 100);
+    }
+};
+
+document.getElementById('stop').onclick = function() {
+    if (running) {
+        running = false;
+        clearInterval(timer);
+        totalElapsed += elapsed;
+        updateTotalTimeDisplay(totalElapsed);
+        elapsed = 0;
+        updateDisplay(elapsed);
+    }
+};
+
+document.getElementById('reset').onclick = function() {
+    running = false;
+    clearInterval(timer);
+    elapsed = 0;
+    totalElapsed = 0;
+    updateDisplay(elapsed);
+    updateTotalTimeDisplay(totalElapsed);
+};
+
+updateDisplay(0);
+updateTotalTimeDisplay(0);
+
+// State Management
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let events = JSON.parse(localStorage.getItem('events')) || [];
+let gameState = {
+    board: Array(9).fill(''),
+    currentPlayer: 'X',
+    gameOver: false
+
 // DOM Elements - Grouped for better organization
 const DOM = {
     tabButtons: document.querySelectorAll('.tab-button'),
@@ -63,6 +201,7 @@ const state = {
     notificationsEnabled: localStorage.getItem('notifications') !== 'false', // Default to true unless explicitly 'false'
     fontSize: parseInt(localStorage.getItem('fontSize')) || 16,
     currentCalendarDate: new Date() // Store current date for calendar
+
 };
 
 // ---
@@ -117,6 +256,77 @@ function showNotification(message, type = 'info') {
 // Initialization
 // ---
 
+=======
+};
+
+// ---
+// Utility Functions
+// ---
+
+/** Saves data to localStorage. */
+function saveToLocalStorage(key, data) {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+        console.error(`Error saving to localStorage for key "${key}":`, e);
+    }
+}
+
+/** Retrieves data from localStorage. */
+function getFromLocalStorage(key, defaultValue) {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : defaultValue;
+    } catch (e) {
+        console.error(`Error parsing localStorage item "${key}":`, e);
+        return defaultValue;
+    }
+}
+
+/** Shows a dynamic notification message. */
+function showNotification(message, type = 'info') {
+    if (!state.notificationsEnabled) return;
+
+    const notificationEl = document.createElement('div');
+    notificationEl.className = `notification ${type}`; // Add type for styling (e.g., 'success', 'error', 'warning')
+    notificationEl.textContent = message;
+
+    // Use a dedicated container for notifications if available, otherwise body
+    const container = DOM.notificationContainer || document.body;
+    container.appendChild(notificationEl);
+
+    // Fade in
+    setTimeout(() => {
+        notificationEl.classList.add('show');
+    }, 50);
+
+    // Fade out and remove
+    setTimeout(() => {
+        notificationEl.classList.remove('show');
+        notificationEl.addEventListener('transitionend', () => notificationEl.remove(), { once: true });
+    }, 3000);
+}
+
+// ---
+// Initialization
+// ---
+
+=======
+// Pomodoro Timer Implementation
+let timerInterval;
+let timeLeft = 25 * 60; // 25 minutes in seconds
+let isRunning = false;
+let currentMode = 'pomodoro';
+let completedPomodoros = 0;
+let totalFocusTime = 0;
+
+const timerModes = {
+    'pomodoro': 25 * 60,
+    'short-break': 5 * 60,
+    'long-break': 15 * 60
+};
+
+// Initialize Components
 document.addEventListener('DOMContentLoaded', () => {
     loadAndApplySettings(); // Load and apply settings first
     initializeTabs();
@@ -132,6 +342,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeSidebar();
     initializeQuickAccess();
     hideLoadingScreen();
+    setTimerMode('pomodoro');
+    updateTimerDisplay();
 });
 
 function loadAndApplySettings() {
@@ -228,6 +440,7 @@ function renderTodos(todosToRender = state.todos) {
         </div>
     `).join('');
     updateTodoStats();
+
 }
 
 function updateTodoStats() {
@@ -237,18 +450,41 @@ function updateTodoStats() {
     DOM.todoStats.textContent = `Total: ${total} | Completed: ${completed}`;
 }
 
-// ---
-// Calculator
-// ---
+
+}
+
+
+function updateTodoStats() {
+    if (!DOM.todoStats) return;
+    const total = state.todos.length;
+    const completed = state.todos.filter(todo => todo.completed).length;
+    DOM.todoStats.textContent = `Total: ${total} | Completed: ${completed}`;
+}
+
+function saveTodos() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
 
 function initializeCalculator() {
+
     if (DOM.calculator) {
         DOM.calculator.addEventListener('click', handleCalculatorClick);
         DOM.calcDisplay.textContent = '0'; // Initialize display
+
+    if (DOM.calculator) {
+        DOM.calculator.addEventListener('click', handleCalculatorClick);
+        DOM.calcDisplay.textContent = '0'; // Initialize display
+
+    const calculator = document.querySelector('.calculator');
+    if (calculator) {
+        calculator.addEventListener('click', handleCalculatorClick);
+
     }
 }
 
 function handleCalculatorClick(event) {
+
     if (!event.target.matches('button')) return;
 
     const value = event.target.textContent;
@@ -287,6 +523,32 @@ function appendToCalc(value) {
             return; // Allow only one decimal point
         } else {
             DOM.calcDisplay.textContent += value;
+
+    if (event.target.matches('.calc-btn')) {
+        const value = event.target.textContent;
+        const display = document.getElementById('calc-display');
+        
+        switch(value) {
+            case 'C':
+                display.textContent = '0';
+                break;
+            case '⌫':
+                display.textContent = display.textContent.slice(0, -1) || '0';
+                break;
+            case '=':
+                try {
+                    display.textContent = eval(display.textContent);
+                } catch (error) {
+                    display.textContent = 'Error';
+                }
+                break;
+            default:
+                if (display.textContent === '0' && value !== '.') {
+                    display.textContent = value;
+                } else {
+                    display.textContent += value;
+                }
+
         }
     }
 }
@@ -304,9 +566,7 @@ function calculateResult() {
     }
 }
 
-// ---
-// Game (Tic-Tac-Toe)
-// ---
+
 
 function initializeGame() {
     renderGameBoard();
@@ -382,9 +642,7 @@ function updateGameStatus() {
     }
 }
 
-// ---
-// Clock
-// ---
+
 
 function initializeClock() {
     updateClock();
@@ -406,9 +664,7 @@ function updateClock() {
     }
 }
 
-// ---
-// Notes
-// ---
+
 
 function initializeNotes() {
     renderNotes();
@@ -677,10 +933,6 @@ function addEvent(event) {
     closeEventModal();
     showNotification('Event added successfully!', 'success');
 }
-
-// ---
-// Search
-// ---
 
 function initializeSearch() {
     if (DOM.searchBtn) {
@@ -957,9 +1209,139 @@ window.toggleTodo = toggleTodo;
 window.deleteTodo = deleteTodo;
 window.deleteNote = deleteNote;
 window.resetGame = resetGame;
+
 window.clearCalc = clearCalc;
 window.deleteLast = deleteLast;
 window.appendToCalc = appendToCalc;
 window.calculateResult = calculateResult;
 window.saveNote = saveNote; // For notes save button
+
 window.filterTodos = filterTodos; // Expose filter function
+
+window.filterTodos = filterTodos; // Expose filter function
+
+
+// Calculator Functions
+function clearCalc() {
+    document.getElementById('calc-display').textContent = '0';
+}
+
+function deleteLast() {
+    const display = document.getElementById('calc-display');
+    display.textContent = display.textContent.slice(0, -1) || '0';
+}
+
+function appendToCalc(value) {
+    const display = document.getElementById('calc-display');
+    if (display.textContent === '0' && value !== '.') {
+        display.textContent = value;
+    } else {
+        display.textContent += value;
+    }
+}
+
+function calculateResult() {
+    const display = document.getElementById('calc-display');
+    try {
+        const result = eval(display.textContent);
+        display.textContent = Number.isFinite(result) ? result : 'Error';
+    } catch (error) {
+        display.textContent = 'Error';
+    }
+}
+// Notes Functions
+function saveNote() {
+    const noteInput = document.getElementById('notes-input');
+    const text = noteInput.value.trim();
+
+    if (text) {
+        const existingNotes = document.querySelectorAll('.note');
+        for (let note of existingNotes) {
+            if (note.textContent === text) {
+                alert("Duplicate note not allowed.");
+                return;
+            }
+        }
+
+        addNote(text);
+        noteInput.value = '';
+    }
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+}
+
+function startPomodoro() {
+    if (!isRunning) {
+        isRunning = true;
+        document.getElementById('start-timer').style.display = 'none';
+        document.getElementById('pause-timer').style.display = 'inline-block';
+        document.querySelector('.timer-display').classList.add('active');
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                handleTimerComplete();
+            }
+        }, 1000);
+    }
+}
+
+function pausePomodoro() {
+    if (isRunning) {
+        isRunning = false;
+        document.getElementById('start-timer').style.display = 'inline-block';
+        document.getElementById('pause-timer').style.display = 'none';
+        document.querySelector('.timer-display').classList.remove('active');
+        clearInterval(timerInterval);
+    }
+}
+
+function resetPomodoro() {
+    clearInterval(timerInterval);
+    isRunning = false;
+    timeLeft = timerModes[currentMode];
+    updateTimerDisplay();
+    document.getElementById('start-timer').style.display = 'inline-block';
+    document.getElementById('pause-timer').style.display = 'none';
+    document.querySelector('.timer-display').classList.remove('active');
+}
+
+function setTimerMode(mode) {
+    currentMode = mode;
+    resetPomodoro();
+    
+    // Update active button
+    document.querySelectorAll('.timer-modes .btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById(`${mode}-mode`).classList.add('active');
+}
+
+function handleTimerComplete() {
+    if (currentMode === 'pomodoro') {
+        completedPomodoros++;
+        totalFocusTime += 25;
+        document.getElementById('completed-pomodoros').textContent = completedPomodoros;
+        document.getElementById('total-focus-time').textContent = `${Math.floor(totalFocusTime / 60)}h ${totalFocusTime % 60}m`;
+        
+        // Show notification
+        showNotification('Pomodoro completed! Time for a break.', 'success');
+    } else {
+        showNotification('Break time is over! Ready for the next pomodoro?', 'info');
+    }
+    
+    // Play sound
+    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+    audio.play();
+    
+    resetPomodoro();
+}
+
