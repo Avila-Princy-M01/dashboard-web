@@ -1,4 +1,5 @@
 
+
 // DOM Elements
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
@@ -135,7 +136,6 @@ let gameState = {
     currentPlayer: 'X',
     gameOver: false
 
-<<<<<<< HEAD
 // DOM Elements - Grouped for better organization
 const DOM = {
     tabButtons: document.querySelectorAll('.tab-button'),
@@ -201,6 +201,62 @@ const state = {
     notificationsEnabled: localStorage.getItem('notifications') !== 'false', // Default to true unless explicitly 'false'
     fontSize: parseInt(localStorage.getItem('fontSize')) || 16,
     currentCalendarDate: new Date() // Store current date for calendar
+
+};
+
+// ---
+// Utility Functions
+// ---
+
+/** Saves data to localStorage. */
+function saveToLocalStorage(key, data) {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+        console.error(`Error saving to localStorage for key "${key}":`, e);
+    }
+}
+
+/** Retrieves data from localStorage. */
+function getFromLocalStorage(key, defaultValue) {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : defaultValue;
+    } catch (e) {
+        console.error(`Error parsing localStorage item "${key}":`, e);
+        return defaultValue;
+    }
+}
+
+/** Shows a dynamic notification message. */
+function showNotification(message, type = 'info') {
+    if (!state.notificationsEnabled) return;
+
+    const notificationEl = document.createElement('div');
+    notificationEl.className = `notification ${type}`; // Add type for styling (e.g., 'success', 'error', 'warning')
+    notificationEl.textContent = message;
+
+    // Use a dedicated container for notifications if available, otherwise body
+    const container = DOM.notificationContainer || document.body;
+    container.appendChild(notificationEl);
+
+    // Fade in
+    setTimeout(() => {
+        notificationEl.classList.add('show');
+    }, 50);
+
+    // Fade out and remove
+    setTimeout(() => {
+        notificationEl.classList.remove('show');
+        notificationEl.addEventListener('transitionend', () => notificationEl.remove(), { once: true });
+    }, 3000);
+}
+
+// ---
+// Initialization
+// ---
+
+=======
 };
 
 // ---
@@ -271,7 +327,6 @@ const timerModes = {
 };
 
 // Initialize Components
->>>>>>> 1ed5aaa (Updated readme file)
 document.addEventListener('DOMContentLoaded', () => {
     loadAndApplySettings(); // Load and apply settings first
     initializeTabs();
@@ -385,9 +440,9 @@ function renderTodos(todosToRender = state.todos) {
         </div>
     `).join('');
     updateTodoStats();
+
 }
 
-<<<<<<< HEAD
 function updateTodoStats() {
     if (!DOM.todoStats) return;
     const total = state.todos.length;
@@ -395,31 +450,41 @@ function updateTodoStats() {
     DOM.todoStats.textContent = `Total: ${total} | Completed: ${completed}`;
 }
 
-// ---
-=======
+
+}
+
+
+function updateTodoStats() {
+    if (!DOM.todoStats) return;
+    const total = state.todos.length;
+    const completed = state.todos.filter(todo => todo.completed).length;
+    DOM.todoStats.textContent = `Total: ${total} | Completed: ${completed}`;
+}
+
 function saveTodos() {
     localStorage.setItem('todos', JSON.stringify(todos));
 }
 
->>>>>>> 1ed5aaa (Updated readme file)
-// Calculator
-// ---
 
 function initializeCalculator() {
-<<<<<<< HEAD
+
     if (DOM.calculator) {
         DOM.calculator.addEventListener('click', handleCalculatorClick);
         DOM.calcDisplay.textContent = '0'; // Initialize display
-=======
+
+    if (DOM.calculator) {
+        DOM.calculator.addEventListener('click', handleCalculatorClick);
+        DOM.calcDisplay.textContent = '0'; // Initialize display
+
     const calculator = document.querySelector('.calculator');
     if (calculator) {
         calculator.addEventListener('click', handleCalculatorClick);
->>>>>>> 1ed5aaa (Updated readme file)
+
     }
 }
 
 function handleCalculatorClick(event) {
-<<<<<<< HEAD
+
     if (!event.target.matches('button')) return;
 
     const value = event.target.textContent;
@@ -458,7 +523,7 @@ function appendToCalc(value) {
             return; // Allow only one decimal point
         } else {
             DOM.calcDisplay.textContent += value;
-=======
+
     if (event.target.matches('.calc-btn')) {
         const value = event.target.textContent;
         const display = document.getElementById('calc-display');
@@ -483,7 +548,7 @@ function appendToCalc(value) {
                 } else {
                     display.textContent += value;
                 }
->>>>>>> 1ed5aaa (Updated readme file)
+
         }
     }
 }
@@ -501,9 +566,7 @@ function calculateResult() {
     }
 }
 
-// ---
-// Game (Tic-Tac-Toe)
-// ---
+
 
 function initializeGame() {
     renderGameBoard();
@@ -579,9 +642,7 @@ function updateGameStatus() {
     }
 }
 
-// ---
-// Clock
-// ---
+
 
 function initializeClock() {
     updateClock();
@@ -603,9 +664,7 @@ function updateClock() {
     }
 }
 
-// ---
-// Notes
-// ---
+
 
 function initializeNotes() {
     renderNotes();
@@ -874,7 +933,6 @@ function addEvent(event) {
     closeEventModal();
     showNotification('Event added successfully!', 'success');
 }
-
 
 function initializeSearch() {
     if (DOM.searchBtn) {
@@ -1151,14 +1209,17 @@ window.toggleTodo = toggleTodo;
 window.deleteTodo = deleteTodo;
 window.deleteNote = deleteNote;
 window.resetGame = resetGame;
-<<<<<<< HEAD
+
 window.clearCalc = clearCalc;
 window.deleteLast = deleteLast;
 window.appendToCalc = appendToCalc;
 window.calculateResult = calculateResult;
 window.saveNote = saveNote; // For notes save button
+
 window.filterTodos = filterTodos; // Expose filter function
-=======
+
+window.filterTodos = filterTodos; // Expose filter function
+
 
 // Calculator Functions
 function clearCalc() {
@@ -1283,4 +1344,4 @@ function handleTimerComplete() {
     
     resetPomodoro();
 }
->>>>>>> 1ed5aaa (Updated readme file)
+
