@@ -3,36 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Interactive Portfolio Dashboard</title>
     <link rel="stylesheet" href="dash_board.css">
+    <!-- Optimized Font Awesome loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </noscript>
+    <!-- Google Fonts with display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="An interactive dashboard showcasing web development skills and tools">
+    <meta name="keywords" content="dashboard, portfolio, web development, interactive">
+    <meta name="author" content="Your Name">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Preload critical assets -->
+    <link rel="preload" href="dash_board.css" as="style">
+    <link rel="preload" href="dash_board.js" as="script">
+    <!-- Browser compatibility -->
+    <script>
+        // Add polyfills for older browsers
+        if (!('IntersectionObserver' in window)) {
+            const script = document.createElement('script');
+            script.src = 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver';
+            document.head.appendChild(script);
+        }
+    </script>
 </head>
 <body>
     <div class="floating-particles" id="particles"></div>
     <div class="notification" id="notification"></div>
     
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loader"></div>
+        <p>Loading Dashboard...</p>
+    </div>
+
+    <!-- Quick Access Menu -->
+    <div class="quick-access">
+        <button class="quick-btn" onclick="scrollToTop()" aria-label="Scroll to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <button class="quick-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+            <i class="fas fa-expand"></i>
+        </button>
+        <button class="quick-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="profile.jpg" alt="Profile" class="profile-img">
+            <h3>Welcome Back!</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="sidebar-link active">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="#profile" class="sidebar-link">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="#projects" class="sidebar-link">
+                <i class="fas fa-project-diagram"></i> Projects
+            </a>
+            <a href="#skills" class="sidebar-link">
+                <i class="fas fa-code"></i> Skills
+            </a>
+            <a href="#contact" class="sidebar-link">
+                <i class="fas fa-envelope"></i> Contact
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+    
     <div class="container">
         <header>
             <h1>Interactive Dashboard</h1>
             <p class="subtitle">Your Enhanced Productivity Hub</p>
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search dashboard...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
         </header>
 
-          <div class="container1">
+        <div class="container1">
             <p class="para1">An interactive dashboard is a data visualization tool that presents key performance indicators (KPIs), metrics, and insights in a dynamic, user-friendly interface. It allows users to explore data through interactive elements like filters, drill-downs, charts, and graphs, enabling real-time analysis and decision-making. Built using tools like Tableau, Power BI, or custom frameworks, interactive dashboards consolidate data from multiple sources, offering customizable views tailored to specific needs. They enhance data accessibility, support trend identification, and improve operational efficiency across industries like business, healthcare, and finance.</p>
-          </div>
+        </div>
 
+        <!-- Quick Stats Overview -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <i class="fas fa-code"></i>
+                <div class="stat-info">
+                    <h4>Total Projects</h4>
+                    <p>47</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-info">
+                    <h4>Happy Clients</h4>
+                    <p>32</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-star"></i>
+                <div class="stat-info">
+                    <h4>GitHub Stars</h4>
+                    <p>289</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <h4>Hours Coded</h4>
+                    <p>1,234</p>
+                </div>
+            </div>
+        </div>
 
         <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
-            <button class="tab-btn" data-tab="calculator">Calculator</button>
-            <button class="tab-btn" data-tab="todo">Todo List</button>
-            <button class="tab-btn" data-tab="weather">Weather</button>
-            <button class="tab-btn" data-tab="game">Tic Tac Toe</button>
+            <button class="tab-btn active" data-tab="dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </button>
+            <button class="tab-btn" data-tab="calculator">
+                <i class="fas fa-calculator"></i> Calculator
+            </button>
+            <button class="tab-btn" data-tab="todo">
+                <i class="fas fa-tasks"></i> Todo List
+            </button>
+            <button class="tab-btn" data-tab="weather">
+                <i class="fas fa-cloud-sun"></i> Weather
+            </button>
+            <button class="tab-btn" data-tab="game">
+                <i class="fas fa-gamepad"></i> Tic Tac Toe
+            </button>
+            <button class="tab-btn" data-tab="notes">
+                <i class="fas fa-sticky-note"></i> Notes
+            </button>
+            <button class="tab-btn" data-tab="settings">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+            <button class="tab-btn" data-tab="projects">
+                <i class="fas fa-project-diagram"></i> Projects
+            </button>
+            <button class="tab-btn" data-tab="calendar">
+                <i class="fas fa-calendar"></i> Calendar
+            </button>
         </nav>
 
         <div id="dashboard" class="tab-content active">
             <div class="dashboard-grid">
                 <div class="card">
-                    <h3>Skills Overview</h3>
+                    <h3><i class="fas fa-code"></i> Skills Overview</h3>
                     <div class="skill-item">
                         <span class="skill-name">JavaScript</span>
                         <div style="display: flex; align-items: center; flex: 1; margin-left: 20px;">
@@ -72,42 +211,56 @@
                 </div>
 
                 <div class="card">
-                    <h3>Quick Stats</h3>
+                    <h3><i class="fas fa-chart-bar"></i> Quick Stats</h3>
                     <div class="stats-item">
-                        <span>Projects Completed</span>
+                        <span><i class="fas fa-project-diagram"></i> Projects Completed</span>
                         <span class="stats-value" id="project-count">47</span>
                     </div>
                     <div class="stats-item">
-                        <span>Lines of Code</span>
+                        <span><i class="fas fa-code"></i> Lines of Code</span>
                         <span class="stats-value" id="code-lines">18,254</span>
                     </div>
                     <div class="stats-item">
-                        <span>Coffee Consumed</span>
+                        <span><i class="fas fa-coffee"></i> Coffee Consumed</span>
                         <span class="stats-value" id="coffee-count">∞</span>
                     </div>
                     <div class="stats-item">
-                        <span>Bugs Fixed</span>
+                        <span><i class="fas fa-bug"></i> Bugs Fixed</span>
                         <span class="stats-value" id="bug-count">143</span>
                     </div>
                     <div class="stats-item">
-                        <span>GitHub Stars</span>
+                        <span><i class="fab fa-github"></i> GitHub Stars</span>
                         <span class="stats-value" id="github-stars">289</span>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>Recent Activity</h3>
-                    <div class="activity-item">✅ Completed responsive design project</div>
-                    <div class="activity-item">🚀 Deployed new web application</div>
-                    <div class="activity-item">📚 Learned new JavaScript framework</div>
-                    <div class="activity-item">🎯 Optimized website performance</div>
-                    <div class="activity-item">🔧 Fixed critical production bug</div>
-                    <div class="activity-item">📊 Created analytics dashboard</div>
-                    <div class="activity-item">🌟 Added new features to portfolio</div>
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <div class="activity-item">
+                        <i class="fas fa-check-circle"></i> Completed responsive design project
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-rocket"></i> Deployed new web application
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-book"></i> Learned new JavaScript framework
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-bullseye"></i> Optimized website performance
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-wrench"></i> Fixed critical production bug
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-chart-pie"></i> Created analytics dashboard
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-star"></i> Added new features to portfolio
+                    </div>
                 </div>
 
                 <div class="card">
-                    <h3>Current Time</h3>
+                    <h3><i class="fas fa-clock"></i> Current Time</h3>
                     <div class="clock-display">
                         <div class="clock-time" id="current-time"></div>
                         <div class="clock-date" id="current-date"></div>
@@ -116,13 +269,79 @@
             </div>
         </div>
 
+        <div id="projects" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-project-diagram"></i> Featured Projects</h3>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="project1.jpg" alt="Project 1">
+                        </div>
+                        <div class="project-info">
+                            <h4>E-commerce Platform</h4>
+                            <p>A full-stack e-commerce solution with React and Node.js</p>
+                            <div class="project-tags">
+                                <span>React</span>
+                                <span>Node.js</span>
+                                <span>MongoDB</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-primary">
+                                    <i class="fas fa-eye"></i> View Demo
+                                </a>
+                                <a href="#" class="btn">
+                                    <i class="fab fa-github"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More project cards... -->
+                </div>
+            </div>
+        </div>
+
+        <div id="calendar" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-calendar"></i> Event Calendar</h3>
+                <div class="calendar-header">
+                    <button class="btn" onclick="previousMonth()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h4 id="current-month">September 2023</h4>
+                    <button class="btn" onclick="nextMonth()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div class="calendar-days" id="calendar-days">
+                        <!-- Calendar days will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="calendar-events">
+                    <h4>Upcoming Events</h4>
+                    <div class="event-list" id="event-list">
+                        <!-- Events will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="calculator" class="tab-content">
             <div class="card">
-                <h3>Enhanced Calculator</h3>
+                <h3><i class="fas fa-calculator"></i> Enhanced Calculator</h3>
                 <div id="calc-display">0</div>
                 <div class="calculator">
-                    <button class="calc-btn" onclick="clearCalc()">C</button>
-                    <button class="calc-btn" onclick="deleteLast()">⌫</button>
+                    <button class="calc-btn" onclick="clearCalc()" aria-label="Clear calculator">C</button>
+                    <button class="calc-btn" onclick="deleteLast()" aria-label="Delete last character">⌫</button>
                     <button class="calc-btn operator" onclick="appendToCalc('/')">/</button>
                     <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
                     <button class="calc-btn" onclick="appendToCalc('7')">7</button>
@@ -145,13 +364,21 @@
 
         <div id="todo" class="tab-content">
             <div class="card">
-                <h3>Smart Todo List</h3>
+                <h3><i class="fas fa-tasks"></i> Smart Todo List</h3>
                 <input type="text" id="todo-input" class="todo-input" placeholder="Add a new task..." onkeypress="handleTodoKeyPress(event)">
-                <button class="btn btn-primary" onclick="addTodo()">Add Task</button>
+                <button class="btn btn-primary" onclick="addTodo()" aria-label="Add new task">
+                    <i class="fas fa-plus"></i> Add Task
+                </button>
                 <div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn btn-primary" onclick="filterTodos('all')" id="filter-all">All</button>
-                    <button class="btn" onclick="filterTodos('active')" id="filter-active" style="background: #e2e8f0; color: #333;">Active</button>
-                    <button class="btn" onclick="filterTodos('completed')" id="filter-completed" style="background: #e2e8f0; color: #333;">Completed</button>
+                    <button class="btn btn-primary" onclick="filterTodos('all')" id="filter-all">
+                        <i class="fas fa-list"></i> All
+                    </button>
+                    <button class="btn" onclick="filterTodos('active')" id="filter-active" style="background: #e2e8f0; color: #333;">
+                        <i class="fas fa-clock"></i> Active
+                    </button>
+                    <button class="btn" onclick="filterTodos('completed')" id="filter-completed" style="background: #e2e8f0; color: #333;">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </button>
                 </div>
                 <div id="todo-list"></div>
                 <div id="todo-stats" style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9rem;"></div>
@@ -160,16 +387,23 @@
 
         <div id="weather" class="tab-content">
             <div class="card">
-                <h3>Weather Information</h3>
+                <h3><i class="fas fa-cloud-sun"></i> Weather Information</h3>
                 <div class="weather-display">
                     <div class="weather-temp">24°C</div>
                     <div class="weather-desc">Sunny with Light Clouds</div>
                     <div class="weather-details">
-<<<<<<< HEAD
-                        <div><strong>Humidity:</strong> 65%</div>
-                        <div><strong>Wind:</strong> 12 km/h</div>
-                        <div><strong>Pressure:</strong> 1013 hPa</div>
-                        <div><strong>UV Index:</strong> 5</div>
+                        <div class="weather-detail-item">
+                            <i class="fas fa-tint"></i> <strong>Humidity:</strong> 58%
+                        </div>
+                        <div class="weather-detail-item">
+                            <i class="fas fa-wind"></i> <strong>Wind:</strong> 8 km/h
+                        </div>
+                        <div class="weather-detail-item">
+                            <i class="fas fa-compress-arrows-alt"></i> <strong>Pressure:</strong> 1018 hPa
+                        </div>
+                        <div class="weather-detail-item">
+                            <i class="fas fa-sun"></i> <strong>UV Index:</strong> 5
+                        </div>
                     </div>
                 </div>
             </div>
@@ -177,19 +411,126 @@
 
         <div id="game" class="tab-content">
             <div class="card">
-                <h3>Tic Tac Toe</h3>
+                <h3><i class="fas fa-gamepad"></i> Tic Tac Toe</h3>
                 <div class="game-status" id="game-status">Player X's turn</div>
                 <div class="game-board" id="game-board"></div>
-                <button class="btn btn-primary" onclick="resetGame()" style="margin-top: 20px;">Reset Game</button>
+                <button class="btn btn-primary" onclick="resetGame()" aria-label="Reset game" style="margin-top: 20px;">
+                    <i class="fas fa-redo"></i> Reset Game
+                </button>
             </div>
+        </div>
+
+        <div id="notes" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-sticky-note"></i> Quick Notes</h3>
+                <div class="notes-container">
+                    <textarea id="notes-input" class="notes-input" placeholder="Write your notes here..."></textarea>
+                    <div class="notes-actions">
+                        <button class="btn btn-primary" onclick="saveNote()" aria-label="Save note">
+                            <i class="fas fa-save"></i> Save Note
+                        </button>
+                        <button class="btn" onclick="clearNote()" aria-label="Clear note" style="background: #e2e8f0; color: #333;">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+                    <div id="saved-notes" class="saved-notes"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-cog"></i> Settings</h3>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                            Dark Mode
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="notifications-toggle" checked onchange="toggleNotifications()">
+                            Enable Notifications
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>Theme Color:</label>
+                        <select id="theme-selector" onchange="changeTheme()">
+                            <option value="default">Default</option>
+                            <option value="blue">Blue</option>
+                            <option value="green">Green</option>
+                            <option value="purple">Purple</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>Font Size:</label>
+                        <input type="range" id="font-size-slider" min="12" max="20" value="16" onchange="changeFontSize()">
+                        <span id="font-size-value">16px</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p>This interactive dashboard was created to showcase web development skills and provide useful tools for productivity.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Interactive Dashboard. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Templates -->
+    <div class="modal" id="event-modal">
+        <div class="modal-content">
+            <h3>Add Event</h3>
+            <form id="event-form" onsubmit="addEvent(event)">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" id="event-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="event-date" required>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" id="event-time" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="event-description"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" aria-label="Save event">Save Event</button>
+                    <button type="button" class="btn" onclick="closeModal()" aria-label="Cancel">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script src="dash_board.js"></script>
 </body>
 </html>
-=======
-                        <div class="weather-detail-item"><strong>Humidity:</strong> 58%</div>
-                        <div class="weather-detail-item"><strong>Wind:</strong> 8 km/h</div>
-                        <div class="weather-detail-item"><strong>Pressure:</strong> 1018 h
->>>>>>> 6d98845a8b7aa823c892ffd194cb30eeeb06de57
