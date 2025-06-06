@@ -31,6 +31,45 @@ const calendarDays = document.querySelector('.calendar-days');
 const eventModal = document.getElementById('event-modal');
 const eventForm = document.getElementById('event-form');
 
+let timer = null;
+let elapsed = 0; // in milliseconds
+let running = false;
+
+function updateDisplay(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    document.getElementById('display').innerText = `${hours}:${minutes}:${seconds}`;
+}
+
+document.getElementById('start').onclick = function() {
+    if (!running) {
+        running = true;
+        let startTime = Date.now() - elapsed;
+        timer = setInterval(() => {
+            elapsed = Date.now() - startTime;
+            updateDisplay(elapsed);
+        }, 100);
+    }
+};
+
+document.getElementById('stop').onclick = function() {
+    if (running) {
+        running = false;
+        clearInterval(timer);
+    }
+};
+
+document.getElementById('reset').onclick = function() {
+    running = false;
+    clearInterval(timer);
+    elapsed = 0;
+    updateDisplay(elapsed);
+};
+
+updateDisplay(0);
+
 // State Management
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
