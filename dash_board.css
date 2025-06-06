@@ -1151,6 +1151,7 @@ header h1 {
   }
 }
 
+
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
     :root {
