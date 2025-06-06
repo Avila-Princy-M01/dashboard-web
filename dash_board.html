@@ -26,6 +26,8 @@
     <!-- Preload critical assets -->
     <link rel="preload" href="dash_board.css" as="style">
     <link rel="preload" href="dash_board.js" as="script">
+    <!-- JavaScript -->
+    <script src="dash_board.js" defer></script>
     <!-- Browser compatibility -->
     <script>
         // Add polyfills for older browsers
@@ -139,32 +141,35 @@
         </div>
 
         <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="dashboard">
+            <button class="tab-btn active" data-target="dashboard">
                 <i class="fas fa-chart-line"></i> Dashboard
             </button>
-            <button class="tab-btn" data-tab="calculator">
+            <button class="tab-btn" data-target="calculator">
                 <i class="fas fa-calculator"></i> Calculator
             </button>
-            <button class="tab-btn" data-tab="todo">
+            <button class="tab-btn" data-target="todo">
                 <i class="fas fa-tasks"></i> Todo List
             </button>
-            <button class="tab-btn" data-tab="weather">
+            <button class="tab-btn" data-target="weather">
                 <i class="fas fa-cloud-sun"></i> Weather
             </button>
-            <button class="tab-btn" data-tab="game">
+            <button class="tab-btn" data-target="game">
                 <i class="fas fa-gamepad"></i> Tic Tac Toe
             </button>
-            <button class="tab-btn" data-tab="notes">
+            <button class="tab-btn" data-target="notes">
                 <i class="fas fa-sticky-note"></i> Notes
             </button>
-            <button class="tab-btn" data-tab="settings">
+            <button class="tab-btn" data-target="settings">
                 <i class="fas fa-cog"></i> Settings
             </button>
-            <button class="tab-btn" data-tab="projects">
+            <button class="tab-btn" data-target="projects">
                 <i class="fas fa-project-diagram"></i> Projects
             </button>
-            <button class="tab-btn" data-tab="calendar">
+            <button class="tab-btn" data-target="calendar">
                 <i class="fas fa-calendar"></i> Calendar
+            </button>
+            <button class="tab-btn" data-target="pomodoro">
+                <i class="fas fa-clock"></i> Pomodoro
             </button>
         </nav>
 
@@ -276,6 +281,20 @@
             <button id="start">Start</button>
             <button id="stop">Stop</button>
             <button id="reset">Reset</button>
+        </div>
+    </div>
+
+     <div class="stopwatch-container">
+        <h1>Stopwatch</h1>
+        <div id="display">00:00:00</div>
+        <div class="buttons">
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div class="total-time-box">
+            <h2>Total Time</h2>
+            <div id="total-time">00:00:00</div>
         </div>
     </div>
 
@@ -477,6 +496,46 @@
                         <label>Font Size:</label>
                         <input type="range" id="font-size-slider" min="12" max="20" value="16" onchange="changeFontSize()">
                         <span id="font-size-value">16px</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Pomodoro Timer Section -->
+        <div id="pomodoro" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-clock"></i> Pomodoro Timer</h3>
+                <div class="pomodoro-container">
+                    <div class="timer-display">
+                        <span id="minutes">25</span>:<span id="seconds">00</span>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="btn btn-primary" id="start-timer" onclick="startPomodoro()">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        <button class="btn" id="pause-timer" onclick="pausePomodoro()" style="display: none;">
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button class="btn" id="reset-timer" onclick="resetPomodoro()">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                    <div class="timer-modes">
+                        <button class="btn" onclick="setTimerMode('pomodoro')" id="pomodoro-mode">Pomodoro</button>
+                        <button class="btn" onclick="setTimerMode('short-break')" id="short-break-mode">Short Break</button>
+                        <button class="btn" onclick="setTimerMode('long-break')" id="long-break-mode">Long Break</button>
+                    </div>
+                    <div class="pomodoro-stats">
+                        <div class="stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Completed Pomodoros: </span>
+                            <span id="completed-pomodoros">0</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span>Total Focus Time: </span>
+                            <span id="total-focus-time">0h</span>
+                        </div>
                     </div>
                 </div>
             </div>
